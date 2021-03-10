@@ -8,13 +8,7 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const errorHandler = require('./middlewares/errorHandler');
 const celebrateError = require('./middlewares/celebrateError');
 
-const auth = require('./middlewares/auth');
-const { createUser, signIn } = require('./controllers/users');
-const { createUserValidation, signInValidation } = require('./middlewares/validators');
-
-const usersRouter = require('./routes/users');
-const moviesRouter = require('./routes/movies');
-const NotFound = require('./errors/NotFound');
+const appRouter = require('./routes/index');
 
 const app = express();
 
@@ -45,17 +39,7 @@ app.use(bodyParser.json());
 
 app.use(requestLogger);
 
-app.post('/signin', signInValidation, signIn);
-app.post('/signup', createUserValidation, createUser);
-
-app.use(auth);
-
-app.use('/', usersRouter);
-app.use('/', moviesRouter);
-
-app.use('*', () => {
-  throw new NotFound('Данный эндпоинт не найден');
-});
+app.use('/', appRouter);
 
 app.use(errorLogger);
 

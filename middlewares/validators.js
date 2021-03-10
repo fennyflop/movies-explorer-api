@@ -19,45 +19,45 @@ const urlCheck = (value, helpers) => {
 
 const signInValidation = celebrate({
   body: Joi.object().keys({
-    email: Joi.string().min(3).custom(emailCheck),
-    password: Joi.string().min(8),
+    email: Joi.string().required().min(3).custom(emailCheck),
+    password: Joi.string().required().min(8),
   }),
 });
 
 const createUserValidation = celebrate({
   body: Joi.object().keys({
-    email: Joi.string().min(3).custom(emailCheck),
-    password: Joi.string().min(8),
-    name: Joi.string().min(2),
+    name: Joi.string().required().min(1),
+    email: Joi.string().required().min(3).custom(emailCheck),
+    password: Joi.string().required().min(8),
   }),
 });
 
 const updateUserValidation = celebrate({
   body: Joi.object().keys({
-    email: Joi.string().min(3).custom(emailCheck),
-    name: Joi.string().min(2),
+    email: Joi.string().required().min(3).custom(emailCheck),
+    name: Joi.string().required().min(2),
   }),
 });
 
 const movieIdValidtaion = celebrate({
   params: Joi.object().keys({
-    movieId: Joi.string().hex().length(24),
+    movieId: Joi.string().required().hex().length(24),
   }),
 });
 
 const createMovieValidation = celebrate({
   body: Joi.object().keys({
-    nameRU: Joi.string().min(1),
-    nameEN: Joi.string().min(1),
-    description: Joi.string().min(1),
-    country: Joi.string().min(1),
-    director: Joi.string().min(1),
-    duration: Joi.number().min(1),
-    year: Joi.string().min(1).max(4),
-    image: Joi.string().custom(urlCheck),
-    trailer: Joi.string().custom(urlCheck),
-    thumbnail: Joi.string().custom(urlCheck),
-    movieId: Joi.number().min(1),
+    nameRU: Joi.string().required().min(1),
+    nameEN: Joi.string().required().min(1),
+    description: Joi.string().required().min(1),
+    country: Joi.string().required().min(1),
+    director: Joi.string().required().min(1),
+    duration: Joi.number().required().min(1),
+    year: Joi.string().required().min(1).max(4),
+    image: Joi.string().required().custom(urlCheck),
+    trailer: Joi.string().required().custom(urlCheck),
+    thumbnail: Joi.string().required().custom(urlCheck),
+    movieId: Joi.number().required().min(1),
   }),
 });
 

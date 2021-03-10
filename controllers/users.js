@@ -12,6 +12,7 @@ dotenv.config();
 const { NODE_ENV, JWT_KEY } = process.env;
 
 module.exports.createUser = (req, res, next) => {
+  console.log(req.body);
   const { email, password, name } = req.body;
 
   bcrypt.hash(password, 10)
