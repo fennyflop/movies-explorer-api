@@ -7,4 +7,3 @@ router.get('/users/me', getUser);
 router.patch('/users/me', updateUserValidation, updateUser);
 
 module.exports = router;
-
