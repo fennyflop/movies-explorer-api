@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const jwt = require('jsonwebtoken');
+const secret = process.env.JWT_SECRET || 'oleg3000'
 const Unauthorized = require('../errors/Unauthorized');
 
 const handleAuthError = () => {
@@ -23,7 +24,7 @@ module.exports = (req, res, next) => {
   let payload;
 
   try {
-    payload = jwt.verify(token, `${process.env.JWT_KEY}`);
+    payload = jwt.verify(token, `${secret}`);
   } catch (err) {
     return handleAuthError(res);
   }

@@ -9,7 +9,7 @@ const NotFound = require('../errors/NotFound');
 
 dotenv.config();
 
-const { NODE_ENV, JWT_KEY } = process.env;
+const secret = process.env.JWT_SECRET || 'oleg3000';
 
 module.exports.createUser = (req, res, next) => {
   console.log(req.body);
@@ -44,7 +44,7 @@ module.exports.signIn = (req, res, next) => {
   return User.findUserByCredentials(email, password)
     .then((user) => {
       res.send({
-        token: jwt.sign({ _id: user._id }, `${NODE_ENV === 'production' ? JWT_KEY : 'oleg3000'}`, { expiresIn: '7d' }),
+        token: jwt.sign({ _id: user._id }, `${secret}`, { expiresIn: '7d' }),
       });
     })
     .catch((err) => {
