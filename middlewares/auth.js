@@ -3,7 +3,8 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const jwt = require('jsonwebtoken');
-const secret = process.env.JWT_SECRET || 'oleg3000'
+
+const secret = process.env.JWT_SECRET || 'oleg3000';
 const Unauthorized = require('../errors/Unauthorized');
 
 const handleAuthError = () => {
