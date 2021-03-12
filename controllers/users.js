@@ -7,6 +7,8 @@ const Conflict = require('../errors/Conflict');
 const Unauthorized = require('../errors/Unauthorized');
 const NotFound = require('../errors/NotFound');
 
+const messages = require('../middlewares/messages');
+
 dotenv.config();
 
 const secret = process.env.JWT_SECRET || 'oleg3000';
@@ -31,7 +33,7 @@ module.exports.createUser = (req, res, next) => {
         })
         .catch((err) => {
           if (err.name.toString() === 'MongoError' && +err.code === 11000) {
-            throw new Conflict('Пользователь с таким email уже зарегестрирован');
+            throw new Conflict(messages.nonUniqueEmail);
           }
         })
         .catch(next);
@@ -44,7 +46,7 @@ module.exports.signIn = (req, res, next) => {
   return User.findUserByCredentials(email, password)
     .then((user) => {
       res.send({
-        token: jwt.sign({ _id: user._id }, `${secret}`, { expiresIn: '7d' }),
+        token: jwt.sign({ _id: user._id }, secret, { expiresIn: '7d' }),
       });
     })
     .catch((err) => {
@@ -56,7 +58,7 @@ module.exports.signIn = (req, res, next) => {
 module.exports.getUser = (req, res, next) => User.findById(req.user._id)
   .then((user) => {
     if (!user) {
-      throw new NotFound('Нет такого пользователя');
+      throw new NotFound(messages.noUser);
     }
     return res.status(200).send({
       email: user.email,

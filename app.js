@@ -7,7 +7,7 @@ const rateLimit = require('express-rate-limit');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const errorHandler = require('./middlewares/errorHandler');
 const celebrateError = require('./middlewares/celebrateError');
-
+const limiter = require('./middlewares/limiter');
 const appRouter = require('./routes/index');
 
 const app = express();
@@ -23,10 +23,7 @@ mongoose.connect(`${mongoUrl}`, {
   useUnifiedTopology: true,
 });
 
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
-});
+app.use(requestLogger);
 
 app.use(limiter);
 
@@ -38,8 +35,6 @@ app.use(cors());
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
-app.use(requestLogger);
 
 app.use('/', appRouter);
 

@@ -1,6 +1,9 @@
 const Movie = require('../models/movie');
 
 const Forbidden = require('../errors/Forbidden');
+const NotFound = require('../errors/NotFound');
+
+const messages = require('../middlewares/messages');
 
 module.exports.createMovie = (req, res, next) => {
   const {
@@ -50,11 +53,14 @@ module.exports.deleteMovie = (req, res, next) => {
       if (movie.owner.toString() === req.user._id.toString()) {
         Movie.findByIdAndRemove(movieId.toString())
           .then((deletedMovie) => res.status(200).send(deletedMovie))
-          .catch(() => { throw new Error('Не удалось удалить карточку.'); })
+          .catch(() => { Error(messages.cardDeletionUnsuccessful); })
           .catch(next);
       } else {
-        throw new Forbidden('Дання карточка вам не принадлежит');
+        throw new Forbidden(messages.cardDeletionUnauthorized);
       }
+    })
+    .catch(() => {
+      throw new NotFound(messages.cardNotFound);
     })
     .catch(next);
 };

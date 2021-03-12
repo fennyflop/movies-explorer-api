@@ -1,4 +1,5 @@
 const dotenv = require('dotenv');
+const messages = require('../middlewares/messages');
 
 dotenv.config();
 
@@ -8,7 +9,7 @@ const secret = process.env.JWT_SECRET || 'oleg3000';
 const Unauthorized = require('../errors/Unauthorized');
 
 const handleAuthError = () => {
-  throw new Unauthorized('Необходима авторизация');
+  throw new Unauthorized(messages.authNeeded);
 };
 
 const extractBearerToken = (header) => header.replace('Bearer ', '');
