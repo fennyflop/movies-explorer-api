@@ -50,17 +50,18 @@ module.exports.deleteMovie = (req, res, next) => {
 
   return Movie.findById(movieId.toString())
     .then((movie) => {
-      if (movie.owner.toString() === req.user._id.toString()) {
-        Movie.findByIdAndRemove(movieId.toString())
-          .then((deletedMovie) => res.status(200).send(deletedMovie))
-          .catch(() => { Error(messages.cardDeletionUnsuccessful); })
-          .catch(next);
+      if (!movie) {
+        throw new NotFound(messages.cardNotFound);
       } else {
-        throw new Forbidden(messages.cardDeletionUnauthorized);
+        if (movie.owner.toString() === req.user._id.toString()) {
+          Movie.findByIdAndRemove(movieId.toString())
+            .then((deletedMovie) => res.status(200).send(deletedMovie))
+            .catch(() => { Error(messages.cardDeletionUnsuccessful); })
+            .catch(next);
+        } else {
+          throw new Forbidden(messages.cardDeletionUnauthorized);
+        }
       }
-    })
-    .catch(() => {
-      throw new NotFound(messages.cardNotFound);
     })
     .catch(next);
 };
