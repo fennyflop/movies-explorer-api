@@ -3,7 +3,6 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const errorHandler = require('./middlewares/errorHandler');
 const celebrateError = require('./middlewares/celebrateError');

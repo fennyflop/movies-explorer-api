@@ -1,9 +1,8 @@
 const dotenv = require('dotenv');
-const messages = require('../middlewares/messages');
+const jwt = require('jsonwebtoken');
+const messages = require('./messages');
 
 dotenv.config();
-
-const jwt = require('jsonwebtoken');
 
 const secret = process.env.JWT_SECRET || 'oleg3000';
 const Unauthorized = require('../errors/Unauthorized');

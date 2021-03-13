@@ -1,6 +1,6 @@
 const { isCelebrateError } = require('celebrate');
 const BadRequestError = require('../errors/BadRequest');
-const messages = require('../middlewares/messages');
+const messages = require('./messages');
 
 module.exports = (err, req, res, next) => {
   if (isCelebrateError(err)) {

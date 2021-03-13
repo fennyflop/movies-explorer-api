@@ -52,15 +52,13 @@ module.exports.deleteMovie = (req, res, next) => {
     .then((movie) => {
       if (!movie) {
         throw new NotFound(messages.cardNotFound);
+      } else if (movie.owner.toString() === req.user._id.toString()) {
+        Movie.findByIdAndRemove(movieId.toString())
+          .then((deletedMovie) => res.status(200).send(deletedMovie))
+          .catch(() => { Error(messages.cardDeletionUnsuccessful); })
+          .catch(next);
       } else {
-        if (movie.owner.toString() === req.user._id.toString()) {
-          Movie.findByIdAndRemove(movieId.toString())
-            .then((deletedMovie) => res.status(200).send(deletedMovie))
-            .catch(() => { Error(messages.cardDeletionUnsuccessful); })
-            .catch(next);
-        } else {
-          throw new Forbidden(messages.cardDeletionUnauthorized);
-        }
+        throw new Forbidden(messages.cardDeletionUnauthorized);
       }
     })
     .catch(next);
